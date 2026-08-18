@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SUPERBЮRO — дизайн-пайплайн</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<style>
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Thin.ttf') format('truetype');
+    font-weight: 100;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Heavy.ttf') format('truetype');
+    font-weight: 800;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face{
+    font-family: 'YS Display';
+    src: url('fonts/YS Display/YS Display-Black.ttf') format('truetype');
+    font-weight: 900;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  :root{
+    --bg: #F7F7F7;
+    --ink: #0A0A0A;
+    --panel: #0A0A0A;
+  }
+
+  *{ box-sizing: border-box; margin:0; padding:0; }
+
+  body{
+    background-color: var(--bg);
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cpath d='M180 174v12M174 180h12' stroke='rgba(10,10,10,0.16)' stroke-width='1'/%3E%3C/svg%3E"),
+      linear-gradient(to right, rgba(10,10,10,0.055) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10,10,10,0.055) 1px, transparent 1px);
+    background-size: 360px 360px, 360px 360px, 360px 360px;
+    background-position: 0 0, 180px 180px, 180px 180px;
+    color: var(--ink);
+    font-family: 'YS Display', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  .hero{
+    position: relative;
+    padding-top: clamp(24px, 4vw, 56px);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container{
+    padding: 0 24px;
+  }
+
+  nav{
+    display: flex;
+    justify-content: center;
+    gap: 44px;
+    font-size: 13px;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    padding-bottom: 40px;
+  }
+  nav a{
+    color: var(--ink);
+    text-decoration: none;
+    position: relative;
+  }
+  nav a::after{
+    content:"";
+    position:absolute; left:0; bottom:-4px;
+    width:100%; height:1px;
+    background: var(--ink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+  }
+  nav a:hover::after{ transform: scaleX(1); }
+
+  .wordmark-img{
+    display: block;
+    width: calc(100% - 48px);
+    margin: 200px auto 0;
+    height: auto;
+  }
+
+  .visually-hidden{
+    position: absolute;
+    width: 1px; height: 1px;
+    padding: 0; margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  .tagline{
+    text-align: center;
+    font-size: 13px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #4A4A4A;
+    margin-top: 28px;
+    padding: 0 24px;
+  }
+
+  .showcase{
+    position: relative;
+    overflow: hidden;
+    margin: clamp(64px, 12vw, 168px) 24px 64px;
+    background: var(--panel);
+    border-radius: 32px;
+    padding: 48px 32px 32px;
+    flex: 1;
+    min-height: 180px;
+  }
+
+  .showcase-grid{
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+    margin-top: -120px;
+    margin-bottom: -120px;
+  }
+
+  .showcase-col{
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-width: 0;
+    gap: 16px;
+    will-change: transform;
+  }
+  .showcase-col:nth-child(2){ margin-top: 64px; }
+  .showcase-col:nth-child(4){ margin-top: 36px; }
+
+  .showcase-link{
+    display: block;
+    position: relative;
+    transition: transform .7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .showcase-link:hover{
+    z-index: 2;
+  }
+
+  /* Symmetric neighbor push: hovering either image slides the OTHER one
+     away via transform only (never affects layout/height, so the panel's
+     height can never change, no matter which image is hovered). */
+  .showcase-col:has(.showcase-link:nth-child(1):hover) .showcase-link:nth-child(2){
+    transform: translateY(14px);
+  }
+  .showcase-col:has(.showcase-link:nth-child(2):hover) .showcase-link:nth-child(1){
+    transform: translateY(-14px);
+  }
+
+  .showcase-col img{
+    display: block;
+    width: 100%;
+    transition: transform .7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .showcase-link:hover img{
+    transform: scale(1.05);
+  }
+
+  @media (max-width: 900px){
+    nav{ gap: 24px; font-size: 11px; }
+    .showcase{
+      padding: 28px 18px 18px;
+      border-radius: 22px;
+    }
+    .showcase-grid{
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 14px;
+    }
+    .showcase-col{ flex: none; }
+    .showcase-link:hover img{ transform: none; }
+    .showcase-col:has(.showcase-link:nth-child(1):hover) .showcase-link:nth-child(2),
+    .showcase-col:has(.showcase-link:nth-child(2):hover) .showcase-link:nth-child(1){
+      transform: none;
+    }
+    .showcase-col:nth-child(2){ margin-top: 32px; }
+    .showcase-col:nth-child(4){ margin-top: 0; }
+    .showcase-col:nth-child(3){ margin-top: 32px; }
+  }
+
+  @media (max-width: 480px){
+    .wordmark{ letter-spacing: -0.02em; }
+    nav{ gap: 16px; flex-wrap: wrap; }
+  }
+
+  .process{
+    padding: 240px 24px clamp(64px, 10vw, 160px);
+  }
+
+  .process-layout{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 20px;
+  }
+
+  .process-intro{
+    grid-column: 1 / span 6;
+  }
+
+  .process-eyebrow{
+    font-family: 'YS Display', sans-serif;
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 0.9;
+    letter-spacing: .05em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .process-heading{
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: clamp(32px, 5.5vw, 80px);
+    line-height: 1.2;
+    letter-spacing: -0.01em;
+    margin: 0;
+    max-width: 700px;
+  }
+
+  .process-list{
+    grid-column: 8 / span 5;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .process-item{
+    display: flex;
+    flex-direction: column;
+    padding: 8px;
+  }
+
+  .process-title{
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: clamp(28px, 3.2vw, 52px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin: 0 0 12px;
+  }
+
+  .process-text{
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--ink);
+    text-transform: lowercase;
+    margin: 0;
+  }
+
+  .process-text .upper{
+    text-transform: uppercase;
+  }
+
+  .process-text .emphasis{
+    font-weight: 500;
+  }
+
+  @media (max-width: 900px){
+    .process-layout{
+      grid-template-columns: 1fr;
+      gap: 48px;
+    }
+    .process-intro{ grid-column: 1; }
+    .process-list{ grid-column: 1; }
+    .faq-list{ grid-column: 1; }
+  }
+
+  /* FAQ */
+  .faq{
+    padding: 0 24px clamp(64px, 10vw, 160px);
+  }
+
+  .faq-list{
+    grid-column: 8 / span 5;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .faq-divider{
+    height: 1px;
+    background: var(--ink);
+    width: 100%;
+    border: none;
+    margin: 0;
+  }
+
+  .faq-question{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 8px;
+    margin: 0;
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-align: left;
+    color: var(--ink);
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: clamp(24px, 3vw, 52px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    transition: transform .15s ease;
+  }
+  .faq-question:active{
+    transform: scale(0.98);
+  }
+
+  .faq-arrow{
+    flex: none;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .faq-arrow svg{
+    width: 48px;
+    height: 48px;
+  }
+
+  .faq-item.is-open .faq-arrow{
+    transform: rotate(90deg);
+  }
+  .faq-item:not(.is-open) .faq-arrow{
+    transform: rotate(0deg);
+  }
+
+  .faq-panel{
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows .6s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .faq-item.is-open .faq-panel{
+    grid-template-rows: 1fr;
+  }
+  .faq-panel-inner{
+    overflow: hidden;
+  }
+
+  .faq-answer{
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: 20px;
+    line-height: 1.3;
+    color: var(--ink);
+    text-transform: lowercase;
+    margin: 0;
+    padding: 0 8px 24px;
+    max-width: 90%;
+  }
+
+  .faq-answer .upper{
+    text-transform: uppercase;
+  }
+  .faq-answer .emphasis{
+    font-weight: 500;
+  }
+  .faq-answer .faq-link{
+    color: var(--ink);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .faq-answer-list{
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .faq-answer-list li{
+    position: relative;
+    padding-left: 20px;
+  }
+  .faq-answer-list li::before{
+    content: "—";
+    position: absolute;
+    left: 0;
+  }
+
+  /* PARALLAX DIVIDER */
+  .divider{
+    padding: 0 24px clamp(64px, 10vw, 160px);
+  }
+
+  .divider-panel{
+    position: relative;
+    overflow: hidden;
+    background: var(--panel);
+    border-radius: 32px;
+    aspect-ratio: 1392 / 888;
+  }
+
+  .divider-item{
+    position: absolute;
+    will-change: transform;
+  }
+  .divider-item img{
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .divider-item.typography{
+    left: 30.03%;
+    top: 63.96%;
+    width: 40.09%;
+    height: 89.19%;
+  }
+  .divider-item.typography img{
+    object-fit: contain;
+  }
+  .divider-item.ui-1{
+    left: -2.01%;
+    top: 27.36%;
+    width: 29.81%;
+    height: 49.66%;
+  }
+  .divider-item.popcorn{
+    left: 30.60%;
+    top: 32.77%;
+    width: 12.07%;
+    height: 28.04%;
+  }
+  .divider-item.ui-2{
+    left: 35.27%;
+    top: 16.22%;
+    width: 29.53%;
+    height: 32.88%;
+  }
+  .divider-item.ui-3{
+    left: 73.21%;
+    top: -6.64%;
+    width: 31.18%;
+    height: 37.16%;
+  }
+  .divider-item.ui-3 img{
+    border-radius: 24px;
+  }
+  .divider-item.card{
+    left: -0.72%;
+    top: -12.95%;
+    width: 26.94%;
+    height: 39.19%;
+  }
+  .divider-item.button{
+    left: 57.54%;
+    top: 40.65%;
+    width: 12.57%;
+    height: 19.71%;
+  }
+  .divider-item.button img{
+    transform: rotate(90deg);
+  }
+  .divider-item.navlist{
+    left: 73.21%;
+    top: 63.96%;
+    width: 6.03%;
+    height: 47.30%;
+  }
+  .divider-item.icons{
+    left: 29.02%;
+    top: 3.15%;
+    width: 39.92%;
+    height: 16.16%;
+  }
+  .divider-item.cart{
+    left: 73.21%;
+    top: 33.07%;
+    width: 28.16%;
+    height: 27.61%;
+  }
+  .divider-item.bigbutton{
+    left: -2.95%;
+    top: 80.18%;
+    width: 30.82%;
+    height: 12.88%;
+  }
+  .divider-item.insurance{
+    left: 72.20%;
+    top: 64.30%;
+    width: 26.58%;
+    height: 41.67%;
+  }
+
+  @media (max-width: 700px){
+    .divider-panel{
+      aspect-ratio: auto;
+      min-height: 70vh;
+    }
+  }
+
+  /* RAW LINKS */
+  .raw{
+    padding: 0 24px clamp(64px, 10vw, 160px);
+  }
+
+  .raw-list{
+    grid-column: 8 / span 5;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .raw-link{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 8px;
+    text-decoration: none;
+    color: var(--ink);
+    font-family: 'YS Display', sans-serif;
+    font-weight: 300;
+    font-size: clamp(24px, 3vw, 52px);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+
+  .raw-link .raw-arrow{
+    flex: none;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .35s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .raw-link .raw-arrow svg{
+    width: 48px;
+    height: 48px;
+  }
+  .raw-link:hover .raw-arrow{
+    transform: translate(3px, -3px);
+  }
+
+  /* SCROLL-LINKED NAV — one element that morphs continuously from its
+     in-hero look into the black pill as you scroll, instead of two
+     separate elements swapping. Driven by JS (see script), not CSS
+     transitions, so it tracks scroll position 1:1. */
+  .nav-fixed{
+    position: fixed;
+    top: calc(clamp(24px, 4vw, 56px) - 24px);
+    left: 24px;
+    right: 24px;
+    z-index: 100;
+    height: 0;
+  }
+
+  .nav-logo-pill{
+    position: absolute;
+    left: 0;
+    top: 0;
+    display: block;
+    background: rgba(247, 247, 247, 0.6);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 0.5px solid #D9D9D9;
+    border-radius: 80px;
+    padding: 14px 24px;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity var(--nav-t, .5s) cubic-bezier(0.16, 1, 0.3, 1), transform .15s ease;
+  }
+  .nav-logo-pill.is-visible{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .nav-logo-pill:active{
+    transform: scale(0.96);
+  }
+  .nav-logo-pill img{
+    display: block;
+    height: 18px;
+    width: auto;
+    filter: invert(1);
+  }
+
+  .nav-links-pill{
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    white-space: nowrap;
+    color: var(--ink);
+    border: 0.5px solid rgba(217, 217, 217, 0);
+    will-change: left, width, background-color, padding, border-radius, backdrop-filter;
+    transition:
+      left var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      width var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      background-color var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      padding var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      border-radius var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      backdrop-filter var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1),
+      border-color var(--nav-t, .5s) cubic-bezier(0.34, 1.14, 0.64, 1);
+  }
+  .nav-links-pill a{
+    color: inherit;
+    text-decoration: none;
+    font-family: 'YS Display', sans-serif;
+    font-weight: 400;
+    font-size: 16px;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    position: relative;
+  }
+  .nav-links-pill a::after{
+    content:"";
+    position:absolute; left:0; bottom:-4px;
+    width:100%; height:1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .25s ease;
+  }
+  .nav-links-pill a:hover::after{ transform: scaleX(1); }
+
+  @media (max-width: 640px){
+    .nav-links-pill{ gap: 20px; }
+    .nav-links-pill a{ font-size: 11px; }
+    .nav-logo-pill{ padding: 10px 18px; }
+    .nav-logo-pill img{ height: 14px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="nav-fixed" id="navFixed">
+  <a class="nav-logo-pill" id="navLogoPill" href="#top">
+    <img src="img/watermark_s_white.png" alt="SUPERBЮRO">
+  </a>
+  <nav class="nav-links-pill" id="navLinksPill">
+    <a href="#examples">примеры</a>
+    <a href="#work">как с нами работать</a>
+    <a href="#raw">сырьё</a>
+  </nav>
+</div>
+
+<header class="hero" id="top">
+  <img class="wordmark-img" src="img/watermark.png" alt="SUPERBЮRO">
+  <h1 class="wordmark visually-hidden">SUPERBЮRO</h1>
+  <p class="tagline">research. design. product. inhouse lab.</p>
+
+  <div class="showcase" id="examples">
+    <div class="showcase-grid">
+      <div class="showcase-col">
+        <a class="showcase-link" href="#"><img src="img/image 1.png" alt=""></a>
+        <a class="showcase-link" href="#"><img src="img/image 2.png" alt=""></a>
+      </div>
+      <div class="showcase-col">
+        <a class="showcase-link" href="#"><img src="img/image 2-1.png" alt=""></a>
+        <a class="showcase-link" href="#"><img src="img/image 3.png" alt=""></a>
+      </div>
+      <div class="showcase-col">
+        <a class="showcase-link" href="#"><img src="img/image 3-1.png" alt=""></a>
+        <a class="showcase-link" href="#"><img src="img/image 3-2.png" alt=""></a>
+      </div>
+      <div class="showcase-col">
+        <a class="showcase-link" href="#"><img src="img/image 4.png" alt=""></a>
+        <a class="showcase-link" href="#"><img src="img/image 4-1.png" alt=""></a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section class="process" id="work">
+  <div class="process-layout">
+    <div class="process-intro">
+      <p class="process-eyebrow">как с нами работать</p>
+      <h2 class="process-heading">что за процесс проектирования<br>и запуска</h2>
+    </div>
+    <div class="process-list">
+      <div class="process-item">
+        <h3 class="process-title">➊ Request</h3>
+        <p class="process-text">Команда приходит в <span class="upper">BЮRO</span> с проблемой, которую нужно решить. <span class="emphasis">нужно принести фактуру.</span> можно принести вайбкод-прототип, если он уже есть</p>
+      </div>
+      <div class="process-item">
+        <h3 class="process-title">➋ Concept</h3>
+        <p class="process-text">арт-директор бюро собирают скелет образа результата, опираясь на готовые работающие решения. можем добавить работу со стилем/визуалом/образом</p>
+      </div>
+      <div class="process-item">
+        <h3 class="process-title">➌ Validation</h3>
+        <p class="process-text">UX-исследователи проверяют прототип на реальных пользователях, чтобы решения опирались на данные, а не догадки.</p>
+      </div>
+      <div class="process-item">
+        <h3 class="process-title">➍ Support</h3>
+        <p class="process-text">Дизайн-команда помогает разработчикам верно реализовать интерфейс, снижая количество доработок.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="faq">
+  <div class="process-layout">
+    <div class="process-intro">
+      <p class="process-eyebrow">как с нами работать</p>
+      <h2 class="process-heading">faq и всякие нюансы</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item is-open">
+        <button class="faq-question" type="button" aria-expanded="true">
+          <span>На нашей стороне</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <ul class="faq-answer faq-answer-list">
+            <li>утвердим основную раму концепции</li>
+            <li>поможем подобрать основные механики</li>
+            <li>погенерим вместе гипотезы</li>
+            <li>соберём кит компонентов, если потребуются новые (всё будет с обратной совместимостью с дизайн-системой <span class="upper">Go</span>)</li>
+          </ul>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>Что делаете сами</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <p class="faq-answer">Команда может самостоятельно масштабировать решение, добавлять корнер-кейсы, пустые состояния и воронки. Можно обращаться к нам за помощью</p>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>А можно брендинг</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <p class="faq-answer">Наша команда отвечает за продуктовый дизайн, но мы можем подсказать с направлением брендинга, набросать key-visuals, помочь с образом, прикинуть стиль коммуникаций.</p>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>Кто окает запуск</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <p class="faq-answer">Запуски в Go и Yango согласует команда супераппа (<a href="#" class="faq-link">все о согласовании тут</a>). Что касается дизайна, финальный ок нужно получить от Юлии Суровцевой (арт-директор Go и по совместительству оунер этой странички 🙂)</p>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>А что после MVP</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <p class="faq-answer">Мы не сможем поддерживать проект на постоянной основе. Решение о закреплённом дизайнере продукта принимается после проверки жизнеспособности бизнеса</p>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>Почему быстрее с BЮRO</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <ul class="faq-answer faq-answer-list">
+            <li>у команды накоплена большая база знаний и опыт запусков внутри супераппа. мы хорошо знаем, что работает, а что нет (мы это много раз проверили в ux-исследованиях и в тестах)</li>
+            <li>мы оуним библиотеку компонентов, поэтому можем быстро переиспользовать готовые кубики или добавить новые, если это понадобится</li>
+            <li>согласование перед запуском в супераппе происходит с этой же командой</li>
+          </ul>
+        </div></div>
+      </div>
+      <hr class="faq-divider">
+      <div class="faq-item">
+        <button class="faq-question" type="button" aria-expanded="false">
+          <span>Какие сервисы уже запускали</span>
+          <span class="faq-arrow" aria-hidden="true">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M32.4 26L21.2 37.2L24 40L40 24L24 8L21.2 10.8L32.4 22L8 22L8 26L32.4 26Z" fill="currentColor"/></svg>
+          </span>
+        </button>
+        <div class="faq-panel"><div class="faq-panel-inner">
+          <p class="faq-answer">мы бережно запустили немало сервисов</p>
+          <ul class="faq-answer faq-answer-list">
+            <li>самокаты</li>
+            <li>бери заряд</li>
+            <li>межгород</li>
+            <li>транспорт</li>
+            <li>places</li>
+            <li>забота</li>
+            <li>мастера</li>
+            <li>sell&amp;buy</li>
+            <li>эира</li>
+            <li>прокат</li>
+          </ul>
+          <p class="faq-answer">мы также очень хорошо знакомы и делали задачи с сервисами:</p>
+          <ul class="faq-answer faq-answer-list">
+            <li>доставка</li>
+            <li>помощник</li>
+            <li>пэй</li>
+            <li>лавка</li>
+            <li>еда</li>
+            <li>маркет</li>
+            <li>карты</li>
+          </ul>
+        </div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="divider">
+  <div class="divider-panel" aria-hidden="true">
+    <div class="divider-item typography">
+      <img src="img/UI_10.png" alt="">
+    </div>
+    <div class="divider-item ui-1">
+      <img src="img/UI_1.png" alt="">
+    </div>
+    <div class="divider-item popcorn">
+      <img src="img/UI_11.png" alt="">
+    </div>
+    <div class="divider-item ui-2">
+      <img src="img/UI_2.png" alt="">
+    </div>
+    <div class="divider-item ui-3">
+      <img src="img/UI_3.png" alt="">
+    </div>
+    <div class="divider-item card">
+      <img src="img/UI_5.png" alt="">
+    </div>
+    <div class="divider-item button">
+      <img src="img/UI_7.png" alt="">
+    </div>
+    <div class="divider-item navlist">
+      <img src="img/UI_13.png" alt="">
+    </div>
+    <div class="divider-item icons">
+      <img src="img/UI_9.png" alt="">
+    </div>
+    <div class="divider-item cart">
+      <img src="img/UI_6.png" alt="">
+    </div>
+    <div class="divider-item bigbutton">
+      <img src="img/UI_14.png" alt="">
+    </div>
+    <div class="divider-item insurance">
+      <img src="img/UI_12.png" alt="">
+    </div>
+  </div>
+</section>
+
+<section class="raw" id="raw">
+  <div class="process-layout">
+    <div class="process-intro">
+      <p class="process-eyebrow">сырье</p>
+      <h2 class="process-heading">собрали всё для самостоятельной работы</h2>
+    </div>
+    <div class="raw-list">
+      <a class="raw-link" href="https://www.figma.com/design/mKvFJhy0uymjlx9KEWNKHf/1-%C2%B7-Color-Variables?m=auto" target="_blank" rel="noopener">
+        <span>Палитра</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/dNVlnMyLlKAL7Mfk8xJIUF/1-%C2%B7-Typography?m=auto" target="_blank" rel="noopener">
+        <span>Типографика</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/6uk5ZJ20Ejp4rQ6Mk4s3zu/1-%C2%B7-Graphics?m=auto" target="_blank" rel="noopener">
+        <span>Иконки</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/wLzOt0Aq3w3C67DqpqDVUp/2-%C2%B7-UI?m=auto" target="_blank" rel="noopener">
+        <span>Компоненты</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/DPHcZEFB2lSpCHGZoCfOI1/2--%C2%B7-Patterns?node-id=0-1&t=eJTTV97GIHSlzaPo-1" target="_blank" rel="noopener">
+        <span>Паттерны</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/taeMRuKdAeLO653vPIW1MN/3-%C2%B7-Go-%C2%B7-Superapp?node-id=47897-234825&t=zevTa4L66iVhKMPh-11" target="_blank" rel="noopener">
+        <span>Гайды супераппа</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="https://www.figma.com/design/taeMRuKdAeLO653vPIW1MN/3-%C2%B7-Go-%C2%B7-Superapp?m=auto&node-id=14188-413785&t=zevTa4L66iVhKMPh-1" target="_blank" rel="noopener">
+        <span>Кнопки сервисов</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+      <a class="raw-link" href="#" target="_blank" rel="noopener">
+        <span>Скилл с библиотекой</span>
+        <span class="raw-arrow" aria-hidden="true">
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M10.5859 34.5859L31.1719 14L12 14L12 10L38 10L38 36L34 36L34 16.8281L13.4141 37.4141L10.5859 34.5859Z" fill="currentColor"/></svg>
+        </span>
+      </a>
+      <hr class="faq-divider">
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var buttons = Array.prototype.slice.call(document.querySelectorAll('.faq-question'));
+  buttons.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      var item = btn.closest('.faq-item');
+      var isOpen = item.classList.contains('is-open');
+
+      buttons.forEach(function(otherBtn){
+        var otherItem = otherBtn.closest('.faq-item');
+        if(otherItem !== item){
+          otherItem.classList.remove('is-open');
+          otherBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      item.classList.toggle('is-open', !isOpen);
+      btn.setAttribute('aria-expanded', String(!isOpen));
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function easeOutQuint(t){
+    return 1 - Math.pow(1 - t, 5);
+  }
+
+  function scrollToTarget(target){
+    var startY = window.pageYOffset;
+    var maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+    var extraNudge = target.id === 'top' ? 0
+      : (target.id === 'work' || target.id === 'raw') ? 116
+      : 140; // scroll a bit further so the last card isn't cut off at the bottom
+    var targetY = Math.max(0, Math.min(target.getBoundingClientRect().top + startY + extraNudge, maxScroll));
+
+    var distance = targetY - startY;
+    var duration = Math.min(2200, Math.max(700, Math.abs(distance) * 0.9));
+    if(target.id === 'examples'){
+      duration *= 2;
+    }
+    var startTime = null;
+
+    if(reduceMQ.matches){
+      window.scrollTo(0, targetY);
+      return duration;
+    }
+
+    function step(timestamp){
+      if(startTime === null) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(1, elapsed / duration);
+      var eased = easeOutQuint(progress);
+      window.scrollTo(0, startY + distance * eased);
+      if(progress < 1){
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+    return duration;
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var id = link.getAttribute('href').slice(1);
+      var target = id && document.getElementById(id);
+      if(!target) return;
+      e.preventDefault();
+
+      if(id === 'top'){
+        document.dispatchEvent(new CustomEvent('nav-scroll-to-top', {
+          detail: { duration: scrollToTarget(target) }
+        }));
+      } else {
+        scrollToTarget(target);
+      }
+    });
+  });
+})();
+</script>
+
+<script>
+(function(){
+  var showcase = document.querySelector('.showcase');
+  if(!showcase) return;
+  var cols = Array.prototype.slice.call(showcase.querySelectorAll('.showcase-col'));
+  if(!cols.length) return;
+
+  var reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var wideMQ = window.matchMedia('(min-width: 901px)');
+  var ticking = false;
+
+  function speedFor(i, n){
+    var center = (n - 1) / 2;
+    var maxDist = center || 1;
+    var dist = Math.abs(i - center) / maxDist; // 0 = center column, 1 = edge column
+    return 0.35 + dist * 1.7; // center moves slowest, edges move much faster
+  }
+
+  function resetTransforms(){
+    cols.forEach(function(col){ col.style.transform = ''; });
+  }
+
+  function update(){
+    ticking = false;
+    if(reduceMQ.matches || !wideMQ.matches){
+      resetTransforms();
+      return;
+    }
+    var rect = showcase.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var progress = ((vh - rect.top) / (vh + rect.height)) - 0.5; // -0.5 .. 0.5 across the scroll range
+    var amplitude = Math.min(150, rect.height * 0.2);
+    cols.forEach(function(col, i){
+      var speed = speedFor(i, cols.length);
+      var y = progress * amplitude * speed * 2;
+      col.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
+    });
+  }
+
+  function onScroll(){
+    if(!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  if(wideMQ.addEventListener){
+    wideMQ.addEventListener('change', update);
+    reduceMQ.addEventListener('change', update);
+  } else {
+    wideMQ.addListener(update);
+    reduceMQ.addListener(update);
+  }
+  update();
+})();
+</script>
+
+<script>
+(function(){
+  var panel = document.querySelector('.divider-panel');
+  if(!panel) return;
+  var items = Array.prototype.slice.call(panel.querySelectorAll('.divider-item'));
+  if(!items.length) return;
+
+  var reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var ticking = false;
+
+  function speedForItem(item, panelWidth){
+    var left = item.offsetLeft;
+    var width = item.offsetWidth;
+    var centerX = left + width / 2;
+    var normCenter = centerX / panelWidth; // 0..1 across panel width
+    var dist = Math.abs(normCenter - 0.5) / 0.5; // 0 = center, 1 = edge
+    return 0.35 + dist * 1.7;
+  }
+
+  function update(){
+    ticking = false;
+    if(reduceMQ.matches){
+      items.forEach(function(item){ item.style.transform = ''; });
+      return;
+    }
+    var rect = panel.getBoundingClientRect();
+    var vh = window.innerHeight || document.documentElement.clientHeight;
+    var progress = ((vh - rect.top) / (vh + rect.height)) - 0.5;
+    var amplitude = Math.min(120, rect.height * 0.16);
+    items.forEach(function(item){
+      var speed = speedForItem(item, panel.offsetWidth);
+      var y = progress * amplitude * speed * 2;
+      item.style.transform = 'translateY(' + y.toFixed(1) + 'px)';
+    });
+  }
+
+  function onScroll(){
+    if(!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  if(reduceMQ.addEventListener){
+    reduceMQ.addEventListener('change', update);
+  } else {
+    reduceMQ.addListener(update);
+  }
+  update();
+})();
+</script>
+
+<script>
+(function(){
+  var hero = document.querySelector('.hero');
+  var wordmark = document.querySelector('.wordmark-img');
+  var navFixed = document.getElementById('navFixed');
+  var logoPill = document.getElementById('navLogoPill');
+  var linksPill = document.getElementById('navLinksPill');
+  var columnRef = document.querySelector('.process-list');
+  if(!hero || !wordmark || !navFixed || !logoPill || !linksPill) return;
+
+  var reduceMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  var startLeft = 0, startWidth = 0;
+  var targetLeft = 0, targetWidth = 0;
+  var startY = 0;
+  var endY = 200;
+  var ticking = false;
+
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
+
+  function computeGeometry(){
+    var navRect = navFixed.getBoundingClientRect();
+
+    // natural centered width/position at rest (t=0): measure with padding
+    // reset to 0 so we get the plain content width
+    var prevLeft = linksPill.style.left;
+    var prevWidth = linksPill.style.width;
+    var prevPadding = linksPill.style.padding;
+    linksPill.style.left = '0px';
+    linksPill.style.width = 'auto';
+    linksPill.style.padding = '0px';
+    var naturalWidth = linksPill.offsetWidth;
+    startWidth = naturalWidth;
+    startLeft = navRect.width / 2 - naturalWidth / 2;
+
+    // final state: measure the padded pill's natural height for the
+    // wordmark-clearance check below
+    linksPill.style.padding = '16px 24px';
+    var pillHeight = linksPill.offsetHeight;
+    linksPill.style.left = prevLeft;
+    linksPill.style.width = prevWidth;
+    linksPill.style.padding = prevPadding;
+
+    // final left/width: align exactly with the 5 right-hand grid columns
+    // used by the process/faq/raw sections, if that reference is present
+    // and that layout is actually active (it collapses to 1 column <900px)
+    if(columnRef && window.innerWidth > 900){
+      var refRect = columnRef.getBoundingClientRect();
+      targetLeft = refRect.left - navRect.left;
+      targetWidth = refRect.width;
+    } else {
+      targetWidth = naturalWidth + 48;
+      targetLeft = navRect.width - targetWidth;
+    }
+
+    // finish the whole transition BEFORE the wordmark scrolls up to meet the
+    // nav bar, so they never visually cross mid-animation
+    var navBottom = navRect.top + pillHeight;
+    var wordmarkTop = wordmark.getBoundingClientRect().top + window.pageYOffset;
+    var clearance = 60; // extra buffer so it settles comfortably before contact
+    endY = Math.max(80, wordmarkTop - navBottom - clearance);
+    startY = Math.max(0, endY - 220);
+  }
+
+  function update(){
+    ticking = false;
+
+    if(reduceMQ.matches){
+      logoPill.classList.add('is-visible');
+      linksPill.style.left = targetLeft.toFixed(1) + 'px';
+      linksPill.style.width = targetWidth.toFixed(1) + 'px';
+      linksPill.style.backgroundColor = 'rgba(247,247,247,0.6)';
+      linksPill.style.backdropFilter = 'blur(20px)';
+      linksPill.style.webkitBackdropFilter = 'blur(20px)';
+      linksPill.style.borderColor = 'rgba(217,217,217,0.6)';
+      linksPill.style.padding = '16px 24px';
+      linksPill.style.borderRadius = '80px';
+      return;
+    }
+
+    var scrollY = window.pageYOffset;
+    var raw = Math.min(1, Math.max(0, (scrollY - startY) / (endY - startY)));
+    var t = easeOutCubic(raw);
+
+    logoPill.classList.toggle('is-visible', raw > 0.05);
+
+    var padV = lerp(0, 16, t);
+    var padH = lerp(0, 24, t);
+    var blurPx = lerp(0, 20, t);
+
+    linksPill.style.left = lerp(startLeft, targetLeft, t).toFixed(1) + 'px';
+    linksPill.style.width = lerp(startWidth, targetWidth, t).toFixed(1) + 'px';
+    linksPill.style.backgroundColor = 'rgba(247,247,247,' + (t * 0.6).toFixed(3) + ')';
+    linksPill.style.backdropFilter = 'blur(' + blurPx.toFixed(1) + 'px)';
+    linksPill.style.webkitBackdropFilter = 'blur(' + blurPx.toFixed(1) + 'px)';
+    linksPill.style.borderColor = 'rgba(217,217,217,' + (t * 0.6).toFixed(3) + ')';
+    linksPill.style.padding = padV.toFixed(1) + 'px ' + padH.toFixed(1) + 'px';
+    linksPill.style.borderRadius = (t * 80).toFixed(1) + 'px';
+  }
+
+  function onScroll(){
+    if(!ticking){
+      requestAnimationFrame(update);
+      ticking = true;
+    }
+  }
+
+  function onResize(){
+    computeGeometry();
+    update();
+  }
+
+  computeGeometry();
+  update();
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onResize);
+  if(reduceMQ.addEventListener){
+    reduceMQ.addEventListener('change', update);
+  } else {
+    reduceMQ.addListener(update);
+  }
+
+  // when the logo triggers a scroll-to-top, match the pill's own return
+  // transition to that scroll's exact duration so they finish together
+  var syncResetTimer;
+  document.addEventListener('nav-scroll-to-top', function(e){
+    var ms = (e.detail && e.detail.duration) || 500;
+    document.documentElement.style.setProperty('--nav-t', ms + 'ms');
+    clearTimeout(syncResetTimer);
+    syncResetTimer = setTimeout(function(){
+      document.documentElement.style.removeProperty('--nav-t');
+    }, ms + 60);
+  });
+})();
+</script>
+
+</body>
+</html>
